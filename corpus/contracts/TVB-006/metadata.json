@@ -1,0 +1,11 @@
+{
+  "id": "TVB-006",
+  "category": "message-ordering",
+  "severity": "high",
+  "exploitability": "moderate",
+  "economic_impact": "funds_at_risk",
+  "description": "Reply-to confusion — contract processes a callback/reply message without verifying the sender is the expected contract, allowing a malicious contract to impersonate replies.",
+  "tvm_specific": true,
+  "evm_equivalent": null,
+  "tonsurance_risk_weight": 0.85
+}

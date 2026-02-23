@@ -1,0 +1,11 @@
+{
+  "id": "TVB-003",
+  "category": "bounce-handling",
+  "severity": "high",
+  "exploitability": "moderate",
+  "economic_impact": "funds_at_risk",
+  "description": "Bounce inflation — a bounced message triggers the contract to re-send, which bounces again, creating an infinite bounce loop that drains the contract's balance through gas fees.",
+  "tvm_specific": true,
+  "evm_equivalent": null,
+  "tonsurance_risk_weight": 0.88
+}

@@ -1,0 +1,11 @@
+{
+  "id": "TVB-001",
+  "category": "bounce-handling",
+  "severity": "critical",
+  "exploitability": "trivial",
+  "economic_impact": "funds_at_risk",
+  "description": "Missing bounce handler — funds sent to a contract that rejects the message are permanently lost because no bounced() receiver is defined to recover them.",
+  "tvm_specific": true,
+  "evm_equivalent": null,
+  "tonsurance_risk_weight": 0.95
+}
