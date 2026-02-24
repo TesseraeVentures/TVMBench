@@ -1,0 +1,157 @@
+{
+  "ethereum\u2192ton": {
+    "source_execution_model": "synchronous, atomic transactions",
+    "target_execution_model": "asynchronous actor model, message passing, workchains, sharding",
+    "relevant_vulnerability_patterns": [
+      {
+        "pattern": "reentrancy",
+        "severity_change": "DIFFERENT \u2014 not lower, not higher. The attack surface shape changes completely.",
+        "migration_action": "Remove reentrancy guards. Add comprehensive bounce handlers for all outgoing messages. Ensure state updates happen before sending messages (checks-effects-interactions still applies, but for different reasons).",
+        "example_losses": 326300000
+      },
+      {
+        "pattern": "flash_loan",
+        "severity_change": "REDUCED \u2014 no atomic composability on TVM means classic flash loans don't work. But message ordering attacks are the new risk.",
+        "migration_action": "Flash loan patterns CANNOT be directly migrated. Decompose into multi-message flows. Add TOCTOU checks for state that may change between messages. Consider message chain timeout patterns.",
+        "example_losses": 508000000
+      },
+      {
+        "pattern": "oracle_manipulation",
+        "severity_change": "DIFFERENT \u2014 synchronous manipulation becomes stale data attacks. Price can change between request and response messages.",
+        "migration_action": "Add freshness checks (timestamp validation). Implement oracle heartbeat monitoring. Consider TWAP-like mechanisms adapted for async delivery. Never trust oracle data that arrived in a different message than the action it gates.",
+        "example_losses": 130000000
+      },
+      {
+        "pattern": "access_control",
+        "severity_change": "SIMILAR \u2014 access control bugs are universal. TVM adds workchain complexity.",
+        "migration_action": "Map all EVM access control modifiers to TVM sender checks. Add workchain validation for cross-workchain messages. Preserve multisig threshold semantics. Validate that bounced messages cannot bypass access control.",
+        "example_losses": 3904773027
+      },
+      {
+        "pattern": "bridge",
+        "severity_change": "CRITICAL \u2014 bridge patterns are chain-specific by definition. Every bridge migration requires full security re-audit.",
+        "migration_action": "NEVER auto-migrate bridge contracts. Flag for mandatory manual review. Verify all proof verification logic against target chain's proof structure. Map validator/guardian patterns to target chain's consensus model.",
+        "example_losses": 1877300000
+      }
+    ],
+    "total_historical_losses_on_source": 4551073027,
+    "migration_warnings": [
+      "Reentrancy guards become unnecessary \u2014 but bounce handlers become critical",
+      "Flash loan patterns must be decomposed into multi-message flows",
+      "Proxy/upgrade patterns have no direct equivalent \u2014 use set_code with state migration",
+      "Storage is not slot-based \u2014 TVM uses cells/dictionaries with rent",
+      "No public mempool \u2014 but validator message ordering creates different MEV risks"
+    ],
+    "risk_level": "CRITICAL"
+  },
+  "solana\u2192ton": {
+    "source_execution_model": "parallel execution, account model, program-derived addresses",
+    "target_execution_model": "asynchronous actor model, message passing, workchains, sharding",
+    "relevant_vulnerability_patterns": [
+      {
+        "pattern": "oracle_manipulation",
+        "severity_change": "DIFFERENT \u2014 synchronous manipulation becomes stale data attacks. Price can change between request and response messages.",
+        "migration_action": "Add freshness checks (timestamp validation). Implement oracle heartbeat monitoring. Consider TWAP-like mechanisms adapted for async delivery. Never trust oracle data that arrived in a different message than the action it gates.",
+        "example_losses": 115000000
+      },
+      {
+        "pattern": "access_control",
+        "severity_change": "SIMILAR \u2014 access control bugs are universal. TVM adds workchain complexity.",
+        "migration_action": "Map all EVM access control modifiers to TVM sender checks. Add workchain validation for cross-workchain messages. Preserve multisig threshold semantics. Validate that bounced messages cannot bypass access control.",
+        "example_losses": 326000000
+      },
+      {
+        "pattern": "bridge",
+        "severity_change": "CRITICAL \u2014 bridge patterns are chain-specific by definition. Every bridge migration requires full security re-audit.",
+        "migration_action": "NEVER auto-migrate bridge contracts. Flag for mandatory manual review. Verify all proof verification logic against target chain's proof structure. Map validator/guardian patterns to target chain's consensus model.",
+        "example_losses": 326000000
+      }
+    ],
+    "total_historical_losses_on_source": 441000000,
+    "migration_warnings": [
+      "Account model \u2192 TVM actor model mapping is non-trivial",
+      "PDA patterns have no equivalent \u2014 TVM uses init_state for address derivation",
+      "CPI \u2192 TVM internal messages (different trust model)",
+      "No instruction introspection on TVM",
+      "Rent model differs: TVM charges ongoing storage, not one-time exemption"
+    ],
+    "risk_level": "CRITICAL"
+  },
+  "bsc\u2192ton": {
+    "source_execution_model": "EVM-compatible, faster blocks, centralized validators",
+    "target_execution_model": "asynchronous actor model, message passing, workchains, sharding",
+    "relevant_vulnerability_patterns": [
+      {
+        "pattern": "access_control",
+        "severity_change": "SIMILAR \u2014 access control bugs are universal. TVM adds workchain complexity.",
+        "migration_action": "Map all EVM access control modifiers to TVM sender checks. Add workchain validation for cross-workchain messages. Preserve multisig threshold semantics. Validate that bounced messages cannot bypass access control.",
+        "example_losses": 665100000
+      },
+      {
+        "pattern": "bridge",
+        "severity_change": "CRITICAL \u2014 bridge patterns are chain-specific by definition. Every bridge migration requires full security re-audit.",
+        "migration_action": "NEVER auto-migrate bridge contracts. Flag for mandatory manual review. Verify all proof verification logic against target chain's proof structure. Map validator/guardian patterns to target chain's consensus model.",
+        "example_losses": 1197000000
+      }
+    ],
+    "total_historical_losses_on_source": 1251100000,
+    "migration_warnings": [
+      "Same EVM\u2192TVM warnings as Ethereum",
+      "Validator model completely different on TON (PoS with sharding)"
+    ],
+    "risk_level": "CRITICAL"
+  },
+  "polygon\u2192ton": {
+    "source_execution_model": "EVM-compatible, PoS sidechain",
+    "target_execution_model": "asynchronous actor model, message passing, workchains, sharding",
+    "relevant_vulnerability_patterns": [
+      {
+        "pattern": "oracle_manipulation",
+        "severity_change": "DIFFERENT \u2014 synchronous manipulation becomes stale data attacks. Price can change between request and response messages.",
+        "migration_action": "Add freshness checks (timestamp validation). Implement oracle heartbeat monitoring. Consider TWAP-like mechanisms adapted for async delivery. Never trust oracle data that arrived in a different message than the action it gates.",
+        "example_losses": 120000000
+      },
+      {
+        "pattern": "access_control",
+        "severity_change": "SIMILAR \u2014 access control bugs are universal. TVM adds workchain complexity.",
+        "migration_action": "Map all EVM access control modifiers to TVM sender checks. Add workchain validation for cross-workchain messages. Preserve multisig threshold semantics. Validate that bounced messages cannot bypass access control.",
+        "example_losses": 611000000
+      },
+      {
+        "pattern": "bridge",
+        "severity_change": "CRITICAL \u2014 bridge patterns are chain-specific by definition. Every bridge migration requires full security re-audit.",
+        "migration_action": "NEVER auto-migrate bridge contracts. Flag for mandatory manual review. Verify all proof verification logic against target chain's proof structure. Map validator/guardian patterns to target chain's consensus model.",
+        "example_losses": 611000000
+      }
+    ],
+    "total_historical_losses_on_source": 731000000,
+    "migration_warnings": [
+      "Same EVM\u2192TVM warnings as Ethereum",
+      "Bridge patterns require complete reimplementation for TVM"
+    ],
+    "risk_level": "CRITICAL"
+  },
+  "avalanche\u2192ton": {
+    "source_execution_model": "EVM-compatible (C-Chain), subnet architecture",
+    "target_execution_model": "asynchronous actor model, message passing, workchains, sharding",
+    "relevant_vulnerability_patterns": [],
+    "total_historical_losses_on_source": 0,
+    "migration_warnings": [
+      "Same EVM\u2192TVM warnings as Ethereum",
+      "Subnet concept maps loosely to TVM workchains"
+    ],
+    "risk_level": "MEDIUM"
+  },
+  "cosmos\u2192ton": {
+    "source_execution_model": "IBC message passing, CosmWasm contracts, Tendermint consensus",
+    "target_execution_model": "asynchronous actor model, message passing, workchains, sharding",
+    "relevant_vulnerability_patterns": [],
+    "total_historical_losses_on_source": 0,
+    "migration_warnings": [
+      "IBC \u2192 TVM cross-workchain messages (different verification model)",
+      "CosmWasm submessages \u2192 TVM internal messages (similar async model)",
+      "Governance timing assumptions change with TVM's non-deterministic message ordering"
+    ],
+    "risk_level": "MEDIUM"
+  }
+}

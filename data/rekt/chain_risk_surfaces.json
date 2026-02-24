@@ -1,0 +1,107 @@
+{
+  "ethereum": {
+    "execution_model": "synchronous, atomic transactions",
+    "key_risks": [
+      "Reentrancy via synchronous external calls",
+      "Flash loan atomic composability attacks",
+      "Storage slot collisions in proxy patterns",
+      "Gas limit manipulation",
+      "Frontrunning via public mempool"
+    ],
+    "tvm_migration_warnings": [
+      "Reentrancy guards become unnecessary \u2014 but bounce handlers become critical",
+      "Flash loan patterns must be decomposed into multi-message flows",
+      "Proxy/upgrade patterns have no direct equivalent \u2014 use set_code with state migration",
+      "Storage is not slot-based \u2014 TVM uses cells/dictionaries with rent",
+      "No public mempool \u2014 but validator message ordering creates different MEV risks"
+    ]
+  },
+  "solana": {
+    "execution_model": "parallel execution, account model, program-derived addresses",
+    "key_risks": [
+      "Account validation (missing owner/signer checks)",
+      "PDA derivation predictability",
+      "Cross-program invocation (CPI) authority escalation",
+      "Instruction introspection attacks",
+      "Rent exemption assumptions"
+    ],
+    "tvm_migration_warnings": [
+      "Account model \u2192 TVM actor model mapping is non-trivial",
+      "PDA patterns have no equivalent \u2014 TVM uses init_state for address derivation",
+      "CPI \u2192 TVM internal messages (different trust model)",
+      "No instruction introspection on TVM",
+      "Rent model differs: TVM charges ongoing storage, not one-time exemption"
+    ]
+  },
+  "bsc": {
+    "execution_model": "EVM-compatible, faster blocks, centralized validators",
+    "key_risks": [
+      "Same as Ethereum EVM risks",
+      "Validator centralization enables targeted censorship",
+      "Lower gas costs enable more complex attacks"
+    ],
+    "tvm_migration_warnings": [
+      "Same EVM\u2192TVM warnings as Ethereum",
+      "Validator model completely different on TON (PoS with sharding)"
+    ]
+  },
+  "polygon": {
+    "execution_model": "EVM-compatible, PoS sidechain",
+    "key_risks": [
+      "Same as Ethereum EVM risks",
+      "Bridge-specific risks (Polygon PoS bridge)",
+      "Chain reorganization risks"
+    ],
+    "tvm_migration_warnings": [
+      "Same EVM\u2192TVM warnings as Ethereum",
+      "Bridge patterns require complete reimplementation for TVM"
+    ]
+  },
+  "avalanche": {
+    "execution_model": "EVM-compatible (C-Chain), subnet architecture",
+    "key_risks": [
+      "Same as Ethereum EVM risks",
+      "Subnet isolation assumptions",
+      "Cross-subnet message passing"
+    ],
+    "tvm_migration_warnings": [
+      "Same EVM\u2192TVM warnings as Ethereum",
+      "Subnet concept maps loosely to TVM workchains"
+    ]
+  },
+  "cosmos": {
+    "execution_model": "IBC message passing, CosmWasm contracts, Tendermint consensus",
+    "key_risks": [
+      "IBC message forgery/replay",
+      "CosmWasm reentrancy (submessages)",
+      "Governance manipulation",
+      "Light client verification bypass"
+    ],
+    "tvm_migration_warnings": [
+      "IBC \u2192 TVM cross-workchain messages (different verification model)",
+      "CosmWasm submessages \u2192 TVM internal messages (similar async model)",
+      "Governance timing assumptions change with TVM's non-deterministic message ordering"
+    ]
+  },
+  "ton": {
+    "execution_model": "asynchronous actor model, message passing, workchains, sharding",
+    "key_risks": [
+      "Missing/incorrect bounce handlers \u2192 locked funds",
+      "Message ordering non-determinism \u2192 race conditions",
+      "Storage rent exhaustion \u2192 state eviction DoS",
+      "Gas forwarding insufficiency \u2192 incomplete message chains",
+      "Workchain address validation bypass",
+      "Dictionary gas bombs \u2192 oversized cell operations",
+      "Replay attacks (missing seqno/subwallet checks)",
+      "set_code without state migration \u2192 corrupted storage",
+      "TEP-74/62/89 compliance gaps in Jetton/NFT/SBT"
+    ],
+    "native_risks_not_in_evm": [
+      "Bounce fund-locking (no EVM equivalent)",
+      "Partial message chain execution (no atomic transactions)",
+      "Storage rent eviction (EVM storage is permanent after creation)",
+      "Non-deterministic cross-shard message delivery",
+      "257-bit integer edge cases (EVM uses 256-bit)"
+    ]
+  }
+}
