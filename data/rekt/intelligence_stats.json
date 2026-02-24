@@ -1,84 +1,34 @@
 {
-  "generated_at": "2026-02-24T07:15:00Z",
+  "generated_at": "2026-02-24T07:30:00Z",
   "total_classified_exploits": 21,
   "total_losses_usd": 5678953027,
   "total_losses_formatted": "$5,678,953,027",
-  "losses_by_attack_vector": {
-    "access_control": {
-      "total_usd": 4209873027,
-      "formatted": "$4,209,873,027"
-    },
-    "bridge": {
-      "total_usd": 2463300000,
-      "formatted": "$2,463,300,000"
-    },
-    "flash_loan": {
-      "total_usd": 508000000,
-      "formatted": "$508,000,000"
-    },
-    "oracle_manipulation": {
-      "total_usd": 366780000,
-      "formatted": "$366,780,000"
-    },
-    "reentrancy": {
-      "total_usd": 326300000,
-      "formatted": "$326,300,000"
-    },
-    "upgrade": {
-      "total_usd": 191100000,
-      "formatted": "$191,100,000"
-    },
-    "storage": {
-      "total_usd": 150000000,
-      "formatted": "$150,000,000"
-    }
-  },
-  "losses_by_chain": {
-    "ethereum": {
-      "total_usd": 4551073027,
-      "formatted": "$4,551,073,027"
-    },
-    "bsc": {
-      "total_usd": 1251100000,
-      "formatted": "$1,251,100,000"
-    },
-    "polygon": {
-      "total_usd": 731000000,
-      "formatted": "$731,000,000"
-    },
-    "solana": {
-      "total_usd": 441000000,
-      "formatted": "$441,000,000"
-    },
-    "bitcoin": {
-      "total_usd": 304000000,
-      "formatted": "$304,000,000"
-    },
-    "arbitrum": {
-      "total_usd": 53000000,
-      "formatted": "$53,000,000"
-    },
-    "moonbeam": {
-      "total_usd": 1780000,
-      "formatted": "$1,780,000"
-    }
-  },
-  "migration_relevance_counts": {
-    "CRITICAL": 7,
-    "HIGH": 8,
-    "MEDIUM": 3,
-    "LOW": 3
-  },
-  "tvmbench_corpus_coverage": {
-    "bounce_handling": "TVB-001 \u2013 TVB-020 (8 entries)",
-    "message_chain": "TVB-004 \u2013 TVB-025 (8 entries)",
-    "gas_storage": "TVB-007 \u2013 TVB-030 (8 entries)",
-    "standards": "TVB-010 \u2013 TVB-035 (8 entries)",
-    "auth_access": "TVB-036 \u2013 TVB-043 (8 entries)",
-    "upgrade_migration": "TVB-013 \u2013 TVB-049 (8 entries)",
-    "arithmetic": "TVB-050 \u2013 TVB-055 (6 entries)",
-    "cross_contract": "TVB-056 \u2013 TVB-060 (5 entries)"
-  },
-  "key_insight": "Bridge exploits account for the highest losses and are the most dangerous migration targets. NEVER auto-migrate bridge contracts.",
-  "ai_assisted_exploit": "Moonwell (2026-02-15) \u2014 first known major exploit of AI-co-authored smart contract code. Validates our fail-closed verification architecture."
+  "chain_risk_profiles": 13,
+  "migration_routes_covered": 96,
+  "vulnerability_patterns": 9,
+  "source_chains": [
+    "aptos",
+    "avalanche",
+    "bsc",
+    "cosmos",
+    "ethereum",
+    "near",
+    "polkadot",
+    "polygon",
+    "solana",
+    "starknet",
+    "sui",
+    "ton"
+  ],
+  "target_chains": [
+    "aptos",
+    "cosmos",
+    "ethereum",
+    "near",
+    "polkadot",
+    "solana",
+    "starknet",
+    "sui",
+    "ton"
+  ]
 }
