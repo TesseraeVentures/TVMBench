@@ -1,0 +1,9 @@
+{
+  "total_entries": 100,
+  "total_lost_usd": 24849957570,
+  "total_lost_formatted": "$24,849,957,570",
+  "top_10_total_usd": 19559547273,
+  "scraped_at": "2026-02-24T07:05:00Z",
+  "source": "rekt.news/leaderboard",
+  "note": "Leaderboard only (top 100). Full scrape with article details requires --full mode in scrape_rekt.py"
+}
